@@ -1,7 +1,166 @@
+// "use client"
+
+// import { Label, Pie, PieChart } from "recharts";
+
+// import {
+//   ChartContainer,
+//   ChartTooltip,
+//   ChartTooltipContent,
+// } from "@/components/ui/chart";
+// import { useEffect, useState } from "react";
+// import useFetch from "@/hooks/useFetch";
+
+// export const description = "A donut chart";
+
+
+// const chartConfig = {
+//   status: {
+//     label: "Status",
+//   },
+//   pending: {
+//     label: "Pending",
+//     color: "#3b82f6",
+//   },
+//   processing: {
+//     label: "Processing",
+//     color: "#eab308",
+//   },
+//   shipped: {
+//     label: "Shipped",
+//     color: "#06b6b4",
+//   },
+//   delivered: {
+//     label: "Delivered",
+//     color: "#22c55e",
+//   },
+//   cancelled: {
+//     label: "Cancelled",
+//     color: "#ef4444",
+//   },
+//   unVerified: {
+//     label: "UnVerified",
+//     color: "#f97316",
+//   },
+// };
+
+// export function OrderStatus() {
+//   const [chartData, setChartData] = useState([])
+//   const [statusCount, setStatusCount] = useState()
+//   const [totalCount, setTotalCount] = useState(0)
+//   const {data: orderStatus, loading} = useFetch('/api/dashboard/admin/order-status')
+
+// useEffect(()=>{
+//   if(orderStatus && orderStatus.success){
+//     const newOrderStatus = orderStatus.data.map((o)=>({
+//       status: o._id,
+//       count: o.count,
+//       fill: `var(--color-${o._id.toLowerCase()})`
+//   }))
+
+//     setChartData(newOrderStatus)
+
+//     const getTotalCount = orderStatus.data.reduce((acc, curr) => acc + curr.count, 0)
+//     setTotalCount(getTotalCount)
+
+//     const statusObj = orderStatus.data.reduce((acc, item) => {
+//       acc[item._id.toLowerCase()] = item.count
+//       return acc
+//     }, {})
+//     setStatusCount(statusObj)
+//   }
+// }, [orderStatus])
+  
+
+//   return (
+//     <div>
+//       <ChartContainer
+//         config={chartConfig}
+//         className="mx-auto aspect-square max-h-[250px]"
+//       >
+//         <PieChart>
+//           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+//           <Pie
+//             data={chartData}
+//             dataKey="count"
+//             nameKey="status"
+//             innerRadius={60}
+//           >
+//             <Label
+//               content={({ viewBox }) => {
+//                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+//                   return (
+//                     <text
+//                       x={viewBox.cx}
+//                       y={viewBox.cy}
+//                       textAnchor="middle"
+//                       dominantBaseline="middle"
+//                     >
+//                       <tspan
+//                         x={viewBox.cx}
+//                         y={viewBox.cy}
+//                         className="fill-foreground text-3xl font-bold"
+//                       >
+//                         {totalCount}
+//                       </tspan>
+//                       <tspan
+//                         x={viewBox.cx}
+//                         y={(viewBox.cy || 0) + 24}
+//                         className="fill-muted-foreground"
+//                       >
+//                         Orders
+//                       </tspan>
+//                     </text>
+//                   );
+//                 }
+//                 return null;
+//               }}
+//             />
+//           </Pie>
+//         </PieChart>
+//       </ChartContainer>
+
+//               <div>
+//                 <ul>
+//                   <li className="flex justify-between items-center mb-3 text-sm">
+//                     <span>Pending</span>
+//                     <span className="rounded-full px-2 text-sm bg-blue-500 text-white">{statusCount?.Pending || 0}</span>
+//                   </li>
+//                   <li className="flex justify-between items-center mb-3 text-sm">
+//                     <span>Processing</span>
+//                     <span className="rounded-full px-2 text-sm bg-yellow-500 text-white">{statusCount?.Processing || 0}</span>
+//                   </li>
+//                   <li className="flex justify-between items-center mb-3 text-sm">
+//                     <span>Shipped</span>
+//                     <span className="rounded-full px-2 text-sm bg-cyan-500 text-white">{statusCount?.Shipped || 0}</span>
+//                   </li>
+//                   <li className="flex justify-between items-center mb-3 text-sm">
+//                     <span>Delivered</span>
+//                     <span className="rounded-full px-2 text-sm bg-green-500 text-white">{statusCount?.Delivered || 0}</span>
+//                   </li>
+//                   <li className="flex justify-between items-center mb-3 text-sm">
+//                     <span>Cancelled</span>
+//                     <span className="rounded-full px-2 text-sm bg-red-500 text-white">{statusCount?.Cancelled || 0}</span>
+//                   </li>
+//                   <li className="flex justify-between items-center mb-3 text-sm">
+//                     <span>UnVerified</span>
+//                     <span className="rounded-full px-2 text-sm bg-orange-500 text-white">{statusCount?.UnVerified || 0}</span>
+//                   </li>
+//                 </ul>
+//               </div>
+
+//     </div>
+
+//   );
+// }
+
+
+
+
+
+
 "use client"
 
 import { Label, Pie, PieChart } from "recharts";
-
 import {
   ChartContainer,
   ChartTooltip,
@@ -12,11 +171,8 @@ import useFetch from "@/hooks/useFetch";
 
 export const description = "A donut chart";
 
-
+// ✅ All keys MUST be lowercase
 const chartConfig = {
-  status: {
-    label: "Status",
-  },
   pending: {
     label: "Pending",
     color: "#3b82f6",
@@ -37,39 +193,47 @@ const chartConfig = {
     label: "Cancelled",
     color: "#ef4444",
   },
-  unVerified: {
+  unverified: {
     label: "UnVerified",
     color: "#f97316",
   },
 };
 
 export function OrderStatus() {
-  const [chartData, setChartData] = useState([])
-  const [statusCount, setStatusCount] = useState()
-  const [totalCount, setTotalCount] = useState(0)
-  const {data: orderStatus, loading} = useFetch('/api/dashboard/admin/order-status')
+  const [chartData, setChartData] = useState([]);
+  const [statusCount, setStatusCount] = useState({});
+  const [totalCount, setTotalCount] = useState(0);
 
-useEffect(()=>{
-  if(orderStatus && orderStatus.success){
-    const newOrderStatus = orderStatus.data.map((o)=>({
-      status: o._id,
-      count: o.count,
-      fill: `var(--color-${o._id.toLowerCase()})`
-  }))
+  const { data: orderStatus } = useFetch(
+    "/api/dashboard/admin/order-status"
+  );
 
-    setChartData(newOrderStatus)
+  useEffect(() => {
+    if (orderStatus && orderStatus.success) {
 
-    const getTotalCount = orderStatus.data.reduce((acc, curr) => acc + curr.count, 0)
-    setTotalCount(getTotalCount)
+      // ✅ Normalize everything to lowercase
+      const newOrderStatus = orderStatus.data.map((o) => ({
+        status: o._id.toLowerCase(),
+        count: o.count,
+        fill: `var(--color-${o._id.toLowerCase()})`,
+      }));
 
-    const statusObj = orderStatus.data.reduce((acc, item) => {
-      acc[item._id] = item.count
-      return acc
-    }, {})
-    setStatusCount(statusObj)
-  }
-}, [orderStatus])
-  
+      setChartData(newOrderStatus);
+
+      const total = orderStatus.data.reduce(
+        (acc, curr) => acc + curr.count,
+        0
+      );
+      setTotalCount(total);
+
+      const statusObj = orderStatus.data.reduce((acc, item) => {
+        acc[item._id.toLowerCase()] = item.count;
+        return acc;
+      }, {});
+
+      setStatusCount(statusObj);
+    }
+  }, [orderStatus]);
 
   return (
     <div>
@@ -119,36 +283,52 @@ useEffect(()=>{
         </PieChart>
       </ChartContainer>
 
-              <div>
-                <ul>
-                  <li className="flex justify-between items-center mb-3 text-sm">
-                    <span>Pending</span>
-                    <span className="rounded-full px-2 text-sm bg-blue-500 text-white">{statusCount?.Pending || 0}</span>
-                  </li>
-                  <li className="flex justify-between items-center mb-3 text-sm">
-                    <span>Processing</span>
-                    <span className="rounded-full px-2 text-sm bg-yellow-500 text-white">{statusCount?.Processing || 0}</span>
-                  </li>
-                  <li className="flex justify-between items-center mb-3 text-sm">
-                    <span>Shipped</span>
-                    <span className="rounded-full px-2 text-sm bg-cyan-500 text-white">{statusCount?.Shipped || 0}</span>
-                  </li>
-                  <li className="flex justify-between items-center mb-3 text-sm">
-                    <span>Delivered</span>
-                    <span className="rounded-full px-2 text-sm bg-green-500 text-white">{statusCount?.Delivered || 0}</span>
-                  </li>
-                  <li className="flex justify-between items-center mb-3 text-sm">
-                    <span>Cancelled</span>
-                    <span className="rounded-full px-2 text-sm bg-red-500 text-white">{statusCount?.Cancelled || 0}</span>
-                  </li>
-                  <li className="flex justify-between items-center mb-3 text-sm">
-                    <span>UnVerified</span>
-                    <span className="rounded-full px-2 text-sm bg-orange-500 text-white">{statusCount?.UnVerified || 0}</span>
-                  </li>
-                </ul>
-              </div>
+      {/* ✅ Status List */}
+      <div>
+        <ul>
+          <li className="flex justify-between mb-3 text-sm">
+            <span>Pending</span>
+            <span className="rounded-full px-2 bg-blue-500 text-white">
+              {statusCount?.pending || 0}
+            </span>
+          </li>
 
+          <li className="flex justify-between mb-3 text-sm">
+            <span>Processing</span>
+            <span className="rounded-full px-2 bg-yellow-500 text-white">
+              {statusCount?.processing || 0}
+            </span>
+          </li>
+
+          <li className="flex justify-between mb-3 text-sm">
+            <span>Shipped</span>
+            <span className="rounded-full px-2 bg-cyan-500 text-white">
+              {statusCount?.shipped || 0}
+            </span>
+          </li>
+
+          <li className="flex justify-between mb-3 text-sm">
+            <span>Delivered</span>
+            <span className="rounded-full px-2 bg-green-500 text-white">
+              {statusCount?.delivered || 0}
+            </span>
+          </li>
+
+          <li className="flex justify-between mb-3 text-sm">
+            <span>Cancelled</span>
+            <span className="rounded-full px-2 bg-red-500 text-white">
+              {statusCount?.cancelled || 0}
+            </span>
+          </li>
+
+          <li className="flex justify-between mb-3 text-sm">
+            <span>UnVerified</span>
+            <span className="rounded-full px-2 bg-orange-500 text-white">
+              {statusCount?.unverified || 0}
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
-
   );
 }
